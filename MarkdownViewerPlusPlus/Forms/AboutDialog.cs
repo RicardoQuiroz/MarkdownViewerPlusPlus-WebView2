@@ -30,12 +30,13 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus.Forms
 
 Version: {version}
 
+WebView2 fork by RicardoQuiroz and Claude (Anthropic).
+Original MarkdownViewer++ by Savas Ziplies (nea).
+
 Many thanks to:
   Notepad++ PluginPack.net by kbilsted
   Markdig by lunet-io
-  PDFSharp by empira Software GmbH
-  HTMLRenderer by ArthurHub
-  SVG.NET by vvvv
+  Microsoft Edge WebView2
   FontAwesome
   dcurtis
 
@@ -60,7 +61,7 @@ For more information, visit the website or check the included README.md
         /// <param name="e"></param>
         private void btnVisit_Click(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/nea/MarkdownViewerPlusPlus");
+            System.Diagnostics.Process.Start("https://github.com/RicardoQuiroz/MarkdownViewerPlusPlus-WebView2");
         }
 
         /// <summary>

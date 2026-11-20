@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
-using System.Windows;
+using System.Windows.Forms;
 using static com.insanitydesign.MarkdownViewerPlusPlus.MarkdownViewerConfiguration;
 
 /// <summary>
@@ -44,7 +44,7 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus.Forms
         {
             if (!Regex.IsMatch(this.txtFileExtensions.Text, this.regExFileExtensions, RegexOptions.IgnoreCase))
             {
-                MessageBox.Show(string.Format("Please check \'{0}\'\r\n" + this.msgFileExtensions, this.lblFileExtensions.Text), "Warning!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format("Please check \'{0}\'\r\n" + this.msgFileExtensions, this.lblFileExtensions.Text), "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 e.Cancel = true;
             }
             else

@@ -1,5 +1,48 @@
-# MarkdownViewerPlusPlus [![Build status](https://ci.appveyor.com/api/projects/status/jkuuth039vioms74?svg=true)](https://ci.appveyor.com/project/nea/markdownviewerplusplus) [![GitHub license](https://img.shields.io/github/license/nea/MarkdownViewerPlusPlus.svg)](https://github.com/nea/MarkdownViewerPlusPlus/blob/master/LICENSE.md) [![GitHub (pre-)release](https://img.shields.io/badge/release-0.8.2-yellow.svg)](https://github.com/nea/MarkdownViewerPlusPlus/releases/tag/0.8.2) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/insanitydesign)
-A Notepad++ Plugin to view a Markdown file rendered on-the-fly
+# MarkdownViewer++ (WebView2)
+A Notepad++ plugin to view a Markdown file rendered on-the-fly — a modernized fork of [MarkdownViewer++](https://github.com/nea/MarkdownViewerPlusPlus) by Savas Ziplies (nea).
+
+Fork by **RicardoQuiroz** and **Claude (Anthropic)**. MIT licensed, like the original. *[Leer en español](README.es.md)*
+
+![MarkdownViewer++ (WebView2)](docs/screenshot.png)
+
+## What's new in 0.9.0
+
+The old HtmlRenderer engine was replaced by **Microsoft Edge WebView2** (preinstalled on Windows 10/11).
+
+| 0.8.2 | 0.9.0 |
+|---|---|
+| Text in the viewer could not be selected or copied | Normal selection, **Ctrl+C** or right-click → *Copy* |
+| Internal links only moved the viewer | Clicking a `#heading` link **jumps the editor to the same line**. Links to other files (`other.md#part`) open them in Notepad++ at that section. Web links open your browser |
+| No dark theme | Uses the **Notepad++ theme colors** (Style Configurator / Dark Mode) and follows theme changes. Can be turned off: *Plugins → MarkdownViewer++ (WebView2) → Follow Notepad++ theme* |
+| Did not refresh while editing/saving on 64-bit Notepad++ 8.3+ (wrong SCNotification layout) | Refreshes **as you type** (300 ms debounce) and **on save** |
+| Only Ctrl+Shift+M to open | **Ctrl+Shift+M** toggles (also while the viewer has focus). **Esc** closes it from inside the viewer. **F5** refreshes, **Ctrl+S** saves the file |
+| Emoji and icons not shown | Color emoji, `:shortcode:` emoji, local images/SVG (relative, `../` and absolute paths), GitHub alerts `> [!NOTE]` with icons, task lists |
+| Dockable panel only | **Undock/Dock** button: moves the viewer to its own window (taskbar button, second monitor). Remembers position and size |
+
+Also: two-way scroll sync (editor ↔ viewer) by source line instead of by percentage; PDF export through Edge's print engine (looks like the preview); printing uses the Edge print dialog.
+
+### Install
+
+1. Download `MarkdownViewerPlusPlus-WebView2-0.9.0-x64.zip` from [Releases](https://github.com/RicardoQuiroz/MarkdownViewerPlusPlus-WebView2/releases).
+2. Close Notepad++ and extract it so you get `Notepad++\plugins\MarkdownViewerPlusPlus\MarkdownViewerPlusPlus.dll` (plus the DLLs next to it). If you have 0.8.2, replace that folder; your settings are kept.
+3. Start Notepad++ and press **Ctrl+Shift+M**.
+
+Requirements: 64-bit Notepad++ 8.x (tested with 8.6.7), Windows 10/11, WebView2 Runtime, .NET Framework 4.8.
+
+### Build
+
+Needs the .NET 8 SDK (`winget install Microsoft.DotNet.SDK.8`); no Visual Studio required.
+
+```powershell
+dotnet build MarkdownViewerPlusPlus\MarkdownViewerPlusPlus.csproj -c Release -p:Platform=x64
+powershell -ExecutionPolicy Bypass -File install.ps1   # with Notepad++ closed
+```
+
+The plugin folder is created in `dist\x64\MarkdownViewerPlusPlus\`. Native exports are added after the build by `tools\DllExport.ps1` (ildasm → `.export` → ilasm). Debug log: set `MDV_DEBUG=1` before starting Notepad++ and read `%TEMP%\MarkdownViewerPlusPlus.log`.
+
+---
+
+*Original README (0.8.2) below.*
 
 ## Features
 * Dockable panel (toggle) with a rendered HTML of the currently selected file/tab

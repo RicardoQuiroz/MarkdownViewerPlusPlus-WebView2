@@ -1,0 +1,115 @@
+/*
+ * MarkdownViewer++ base stylesheet.
+ * Every color is derived from --bg / --fg, which the plugin sets from the
+ * Notepad++ theme (Settings > Style Configurator) when "Follow Notepad++ theme" is on.
+ */
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --accent: #0969da;
+  --muted: color-mix(in srgb, var(--fg) 62%, var(--bg));
+  --border: color-mix(in srgb, var(--fg) 18%, var(--bg));
+  --subtle-bg: color-mix(in srgb, var(--fg) 5%, var(--bg));
+  --code-bg: color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --mark-bg: #fff8c5;
+  --note: #0969da; --tip: #1a7f37; --important: #8250df; --warning: #9a6700; --caution: #cf222e;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --accent: #4493f8;
+  --mark-bg: #bb800926;
+  --note: #4493f8; --tip: #3fb950; --important: #ab7df8; --warning: #d29922; --caution: #f85149;
+  color-scheme: dark;
+}
+
+html { background: var(--bg); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", "Noto Color Emoji";
+  font-size: 15px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+.markdown-body { padding: 16px 24px 48px; max-width: 980px; }
+.markdown-body > :first-child { margin-top: 0 !important; }
+
+::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4, h5, h6 { margin: 24px 0 16px; font-weight: 600; line-height: 1.25; scroll-margin-top: 8px; }
+h1 { font-size: 2em; padding-bottom: .3em; border-bottom: 1px solid var(--border); }
+h2 { font-size: 1.5em; padding-bottom: .3em; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.25em; }
+h4 { font-size: 1em; }
+h5 { font-size: .875em; }
+h6 { font-size: .85em; color: var(--muted); }
+
+p, blockquote, ul, ol, dl, table, pre, details, figure { margin: 0 0 16px; }
+hr { height: 2px; margin: 24px 0; background: var(--border); border: 0; }
+
+blockquote { padding: 0 1em; color: var(--muted); border-left: .25em solid var(--border); }
+blockquote > :last-child { margin-bottom: 0; }
+
+ul, ol { padding-left: 2em; }
+li + li { margin-top: .25em; }
+li > p { margin-top: 16px; }
+.task-list-item, .contains-task-list li { list-style-type: none; }
+.task-list-item input, li > input[type=checkbox] { margin: 0 .3em .2em -1.4em; vertical-align: middle; }
+
+code, kbd, pre, samp, tt { font-family: ui-monospace, "Cascadia Code", Consolas, "Liberation Mono", monospace; font-size: 88%; }
+code { padding: .2em .4em; background: var(--code-bg); border-radius: 6px; }
+pre { padding: 16px; overflow: auto; line-height: 1.45; background: var(--code-bg); border-radius: 6px; }
+pre code { padding: 0; background: transparent; border-radius: 0; font-size: 100%; white-space: pre; }
+kbd { display: inline-block; padding: 3px 5px; line-height: 10px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; background: var(--subtle-bg); }
+
+table { border-collapse: collapse; display: block; width: max-content; max-width: 100%; overflow: auto; }
+th, td { padding: 6px 13px; border: 1px solid var(--border); }
+th { font-weight: 600; background: var(--subtle-bg); }
+tr:nth-child(2n) td { background: var(--subtle-bg); }
+
+img, video { max-width: 100%; box-sizing: content-box; background: transparent; }
+img[align=right] { padding-left: 20px; }
+img[align=left] { padding-right: 20px; }
+figure { margin-left: 0; }
+figcaption { color: var(--muted); font-size: .9em; }
+mark { background: var(--mark-bg); color: inherit; }
+dl dt { font-weight: 600; margin-top: 16px; }
+dl dd { margin: 0 0 16px; padding: 0 16px; }
+abbr[title] { text-decoration: underline dotted; cursor: help; }
+.footnotes { font-size: .9em; color: var(--muted); border-top: 1px solid var(--border); margin-top: 32px; padding-top: 8px; }
+.footnotes hr { display: none; }
+.emoji { font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; font-style: normal; }
+
+/* GitHub alerts: > [!NOTE], > [!TIP], > [!IMPORTANT], > [!WARNING], > [!CAUTION] */
+.markdown-alert { padding: 8px 16px; margin-bottom: 16px; color: inherit; border-left: .25em solid var(--alert, var(--border)); }
+.markdown-alert > :last-child { margin-bottom: 0; }
+.markdown-alert-title { display: flex; align-items: center; gap: 8px; font-weight: 500; color: var(--alert); line-height: 1; margin-bottom: 8px; }
+.markdown-alert-title svg { fill: currentColor; }
+.markdown-alert-note { --alert: var(--note); }
+.markdown-alert-tip { --alert: var(--tip); }
+.markdown-alert-important { --alert: var(--important); }
+.markdown-alert-warning { --alert: var(--warning); }
+.markdown-alert-caution { --alert: var(--caution); }
+
+/* Flash the target of an internal link so it is easy to spot */
+.mdv-target { animation: mdv-flash 1.2s ease-out; }
+@keyframes mdv-flash { from { background: color-mix(in srgb, var(--accent) 25%, transparent); } to { background: transparent; } }
+
+.mdv-message { color: var(--muted); font-style: italic; }
+
+/* Avoid page breaks inside the most common elements (PDF export / printing) and always print light */
+td, h1, h2, h3, h4, h5, p, ul, ol, li { page-break-inside: avoid; }
+@media print {
+  :root, :root[data-theme="dark"] {
+    --bg: #ffffff; --fg: #1f2328; --accent: #0969da; --mark-bg: #fff8c5;
+    --note: #0969da; --tip: #1a7f37; --important: #8250df; --warning: #9a6700; --caution: #cf222e;
+    color-scheme: light;
+  }
+  .markdown-body { max-width: none; padding: 0; }
+}

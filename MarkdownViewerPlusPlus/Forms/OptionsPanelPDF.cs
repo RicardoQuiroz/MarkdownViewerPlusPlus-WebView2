@@ -1,5 +1,4 @@
-﻿using PdfSharp;
-using System;
+﻿using System;
 using System.Linq;
 using static com.insanitydesign.MarkdownViewerPlusPlus.MarkdownViewerConfiguration;
 
@@ -20,15 +19,14 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus.Forms
         public override void LoadOptions(Options options)
         {
             //Load options from enum
-            this.cmbPDFOrientation.Items.AddRange(Enum.GetNames(typeof(PageOrientation)));
+            this.cmbPDFOrientation.Items.AddRange(Enum.GetNames(typeof(PdfOrientation)));
             //Set a default value
-            this.cmbPDFOrientation.SelectedItem = PageOrientation.Portrait.ToString();
+            this.cmbPDFOrientation.SelectedItem = PdfOrientation.Portrait.ToString();
             //Now load
             this.cmbPDFOrientation.SelectedItem = options.pdfOrientation.ToString();
             //
-            this.cmbPDFPageSize.Items.AddRange(Enum.GetNames(typeof(PageSize)));
-            this.cmbPDFPageSize.Items.Remove(PageSize.Undefined.ToString());
-            this.cmbPDFPageSize.SelectedItem = PageSize.A4.ToString();
+            this.cmbPDFPageSize.Items.AddRange(Enum.GetNames(typeof(PdfPageSize)));
+            this.cmbPDFPageSize.SelectedItem = PdfPageSize.A4.ToString();
             this.cmbPDFPageSize.SelectedItem = options.pdfPageSize.ToString();
             //Load margins
             int[] margins = options.GetMargins();
@@ -46,13 +44,13 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus.Forms
         /// <param name="options"></param>
         public override void SaveOptions(ref Options options)
         {
-            PageOrientation pdfOrientation;
-            if (Enum.TryParse<PageOrientation>(this.cmbPDFOrientation.SelectedItem.ToString(), out pdfOrientation))
+            PdfOrientation pdfOrientation;
+            if (Enum.TryParse<PdfOrientation>(this.cmbPDFOrientation.SelectedItem.ToString(), out pdfOrientation))
             {
                 options.pdfOrientation = pdfOrientation;
             }
-            PageSize pdfPageSize;
-            if (Enum.TryParse<PageSize>(this.cmbPDFPageSize.SelectedItem.ToString(), out pdfPageSize))
+            PdfPageSize pdfPageSize;
+            if (Enum.TryParse<PdfPageSize>(this.cmbPDFPageSize.SelectedItem.ToString(), out pdfPageSize))
             {
                 options.pdfPageSize = pdfPageSize;
             }

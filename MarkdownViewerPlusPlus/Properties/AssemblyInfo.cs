@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MarkdownViewer++")]
-[assembly: AssemblyDescription("A Notepad++ Plugin to view a Markdown file rendered on-the-fly")]
+[assembly: AssemblyTitle("MarkdownViewer++ (WebView2)")]
+[assembly: AssemblyDescription("A Notepad++ plugin to view Markdown rendered on-the-fly (WebView2 fork of MarkdownViewer++)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MarkdownViewer++")]
-[assembly: AssemblyCopyright("Copyright © Savas Ziplies 2017-2018")]
+[assembly: AssemblyProduct("MarkdownViewer++ (WebView2)")]
+[assembly: AssemblyCopyright("Copyright © Savas Ziplies 2017-2018, RicardoQuiroz & Claude (Anthropic) 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.8.2.*")]
-[assembly: AssemblyFileVersion("0.8.2.0")]
+[assembly: AssemblyVersion("0.9.0.*")]
+[assembly: AssemblyFileVersion("0.9.0.0")]

@@ -14,7 +14,7 @@ namespace Kbg.NppPluginNET
         /// <summary>
         /// 
         /// </summary>
-        public const string PluginName = "MarkdownViewer++";
+        public const string PluginName = "MarkdownViewer++ (WebView2)";
 
         /// <summary>
         /// "Singleton" for this plugin of the actual implementation

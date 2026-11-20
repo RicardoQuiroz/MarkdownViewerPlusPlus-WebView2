@@ -1,6 +1,7 @@
 MIT License
 
 Copyright (c) 2017 Savas Ziplies
+Copyright (c) 2026 RicardoQuiroz and Claude (Anthropic) - WebView2 fork
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

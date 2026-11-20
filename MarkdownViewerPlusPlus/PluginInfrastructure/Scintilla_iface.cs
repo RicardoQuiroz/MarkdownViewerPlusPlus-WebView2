@@ -18,61 +18,49 @@ namespace Kbg.NppPluginNET.PluginInfrastructure
     [StructLayout(LayoutKind.Sequential)]
     public struct ScNotificationHeader
     {
-        /// <summary>
-        /// environment specific window handle/pointer
-        /// </summary>
-        public IntPtr hwndFrom; 
+        /// <summary>environment specific window handle/pointer</summary>
+        public IntPtr hwndFrom;
 
-        /// <summary>
-        /// CtrlID of the window issuing the notification
-        /// </summary>
+        /// <summary>CtrlID of the window issuing the notification</summary>
         public IntPtr IdFrom;
 
-        /// <summary>
-        /// The SCN_* notification Code
-        /// </summary>
-        public uint Code;       
+        /// <summary>The SCN_* notification Code</summary>
+        public uint Code;
     }
 
+    /// <summary>
+    /// SCNotification as defined by Scintilla 5 (Notepad++ 8.3+): all Sci_Position fields are pointer-sized.
+    /// The old layout (int positions) was misaligned on x64, which broke SCN_MODIFIED/SCN_UPDATEUI handling.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ScNotification
     {
         public ScNotificationHeader Header;
-        private int position;               /* SCN_STYLENEEDED, SCN_DOUBLECLICK, SCN_MODIFIED, SCN_MARGINCLICK, SCN_NEEDSHOWN, SCN_DWELLSTART, SCN_DWELLEND, SCN_CALLTIPCLICK, SCN_HOTSPOTCLICK, SCN_HOTSPOTDOUBLECLICK, SCN_HOTSPOTRELEASECLICK, SCN_INDICATORCLICK, SCN_INDICATORRELEASE, SCN_USERLISTSELECTION, SCN_AUTOCSELECTION */
-        public int character;               /* SCN_CHARADDED, SCN_KEY, SCN_AUTOCCOMPLETE, SCN_AUTOCSELECTION, SCN_USERLISTSELECTION */
-        public int Mmodifiers;              /* SCN_KEY, SCN_DOUBLECLICK, SCN_HOTSPOTCLICK, SCN_HOTSPOTDOUBLECLICK, SCN_HOTSPOTRELEASECLICK, SCN_INDICATORCLICK, SCN_INDICATORRELEASE */
-        public int ModificationType;        /* SCN_MODIFIED - modification types are name "SC_MOD_*" */
-        public IntPtr TextPointer;          /* SCN_MODIFIED, SCN_USERLISTSELECTION, SCN_AUTOCSELECTION, SCN_URIDROPPED */
-        public int Length;                  /* SCN_MODIFIED */
-        public int LinesAdded;              /* SCN_MODIFIED */
-        public int Message;                 /* SCN_MACRORECORD */
-        public IntPtr wParam;               /* SCN_MACRORECORD */
-        public IntPtr lParam;               /* SCN_MACRORECORD */
+        private IntPtr position;            /* Sci_Position */
+        public int character;
+        public int Mmodifiers;
+        public int ModificationType;        /* SCN_MODIFIED - SC_MOD_* */
+        public IntPtr TextPointer;
+        public IntPtr Length;               /* Sci_Position */
+        public IntPtr LinesAdded;           /* Sci_Position */
+        public int Message;
+        public IntPtr wParam;
+        public IntPtr lParam;
+        public IntPtr LineNumber;           /* Sci_Position, 0-based */
+        public int FoldLevelNow;
+        public int FoldLevelPrev;
+        public int Margin;
+        public int ListType;
+        public int X;
+        public int Y;
+        public int Token;
+        public IntPtr AnnotationLinesAdded; /* Sci_Position */
+        public int Updated;                 /* SCN_UPDATEUI */
+        public int ListCompletionMethod;
+        public int CharacterSource;
 
-        /// <summary>
-        /// 0-based index
-        /// </summary>
-        public int LineNumber;           /* SCN_MODIFIED */
-        public int FoldLevelNow;         /* SCN_MODIFIED */
-        public int FoldLevelPrev;        /* SCN_MODIFIED */
-        public int Margin;               /* SCN_MARGINCLICK */
-        public int ListType;             /* SCN_USERLISTSELECTION */
-        public int X;                    /* SCN_DWELLSTART, SCN_DWELLEND */
-        public int Y;                    /* SCN_DWELLSTART, SCN_DWELLEND */
-        public int Token;                /* SCN_MODIFIED with SC_MOD_CONTAINER */
-        public int AnnotationLinesAdded; /* SC_MOD_CHANGEANNOTATION */
-        public int Updated;              /* SCN_UPDATEUI */
-        public int ListCompletionMethod; /* SCN_AUTOCSELECTION, SCN_AUTOCCOMPLETED, SCN_USERLISTSELECTION */
+        public Position Position { get { return new Position((int)position.ToInt64()); } }
 
-        /// <summary>
-        /// SCN_STYLENEEDED, SCN_DOUBLECLICK, SCN_MODIFIED, SCN_MARGINCLICK, SCN_NEEDSHOWN, SCN_DWELLSTART, SCN_DWELLEND, SCN_CALLTIPCLICK, SCN_HOTSPOTCLICK, SCN_HOTSPOTDOUBLECLICK, SCN_HOTSPOTRELEASECLICK, SCN_INDICATORCLICK, SCN_INDICATORRELEASE, SCN_USERLISTSELECTION, SCN_AUTOCSELECTION
-        /// </summary>
-        public Position Position { get { return new Position(position); } }
-
-        /// <summary>
-        /// Character of the notification - eg keydown
-        /// SCN_CHARADDED, SCN_KEY, SCN_AUTOCCOMPLETE, SCN_AUTOCSELECTION, SCN_USERLISTSELECTION
-        /// </summary>
         public char Character { get { return (char) character; } }
     }
 

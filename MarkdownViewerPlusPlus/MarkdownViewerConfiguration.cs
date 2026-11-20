@@ -1,5 +1,5 @@
 ﻿using Kbg.NppPluginNET.PluginInfrastructure;
-using PdfSharp;
+using System.Drawing;
 using System;
 using System.IO;
 using System.Linq;
@@ -52,11 +52,11 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus
             /// <summary>
             /// 
             /// </summary>
-            public PageOrientation pdfOrientation;
+            public PdfOrientation pdfOrientation;
             /// <summary>
             /// 
             /// </summary>
-            public PageSize pdfPageSize;
+            public PdfPageSize pdfPageSize;
             /// <summary>
             /// 
             /// </summary>
@@ -86,6 +86,15 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus
             /// 
             /// </summary>
             public bool htmlOpenExport;
+
+            /// <summary>Use the Notepad++ editor colors (light/dark theme) for the viewer</summary>
+            public bool followNppTheme;
+
+            /// <summary>Viewer shown in its own window instead of the Notepad++ panel</summary>
+            public bool undocked;
+
+            /// <summary>"x,y,width,height" of the undocked window</summary>
+            public string floatingBounds;
         }
 
         /// <summary>
@@ -146,12 +155,14 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus
             {
                 if (field.FieldType == typeof(bool))
                 {
-                    field.SetValue(options, (Win32.GetPrivateProfileInt(this.assemblyName, field.Name, 0, iniFilePath) != 0));
+                    bool current = (bool)field.GetValue(options);
+                    field.SetValue(options, (Win32.GetPrivateProfileInt(this.assemblyName, field.Name, current ? 1 : 0, iniFilePath) != 0));
                 }
                 else if (field.FieldType == typeof(string))
                 {
                     StringBuilder sbFieldValue = new StringBuilder(32767);
-                    Win32.GetPrivateProfileString(this.assemblyName, field.Name, "", sbFieldValue, 32767, iniFilePath);
+                    string current = (string)field.GetValue(options) ?? "";
+                    Win32.GetPrivateProfileString(this.assemblyName, field.Name, current, sbFieldValue, 32767, iniFilePath);
                     field.SetValue(options, sbFieldValue.ToString());
                 }
                 else if (field.FieldType.IsEnum)
@@ -215,14 +226,45 @@ namespace com.insanitydesign.MarkdownViewerPlusPlus
             Options options = new Options()
             {
                 inclNewFiles = true,
-                pdfOrientation = PageOrientation.Portrait,
-                pdfPageSize = PageSize.A4,
-                synchronizeScrolling = false,
+                pdfOrientation = PdfOrientation.Portrait,
+                pdfPageSize = PdfPageSize.A4,
+                followNppTheme = true,
+                undocked = false,
+                floatingBounds = "",
+                synchronizeScrolling = true,
                 margins = "5,5,5,5",
                 pdfOpenExport = false,
                 htmlOpenExport = false
             };
             return options;
+        }
+    }
+
+    /// <summary>PDF page orientation (names kept compatible with the old PdfSharp settings)</summary>
+    public enum PdfOrientation { Portrait, Landscape }
+
+    /// <summary>PDF page sizes (names kept compatible with the old PdfSharp settings)</summary>
+    public enum PdfPageSize { A3, A4, A5, B4, B5, Letter, Legal, Tabloid, Ledger, Executive }
+
+    public static class PdfPageSizes
+    {
+        /// <summary>Page size in inches (portrait)</summary>
+        public static SizeF Inches(PdfPageSize size)
+        {
+            const float mm = 1f / 25.4f;
+            switch (size)
+            {
+                case PdfPageSize.A3: return new SizeF(297 * mm, 420 * mm);
+                case PdfPageSize.A5: return new SizeF(148 * mm, 210 * mm);
+                case PdfPageSize.B4: return new SizeF(250 * mm, 353 * mm);
+                case PdfPageSize.B5: return new SizeF(176 * mm, 250 * mm);
+                case PdfPageSize.Letter: return new SizeF(8.5f, 11f);
+                case PdfPageSize.Legal: return new SizeF(8.5f, 14f);
+                case PdfPageSize.Tabloid: return new SizeF(11f, 17f);
+                case PdfPageSize.Ledger: return new SizeF(17f, 11f);
+                case PdfPageSize.Executive: return new SizeF(7.25f, 10.5f);
+                default: return new SizeF(210 * mm, 297 * mm);
+            }
         }
     }
 }

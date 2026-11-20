@@ -8,6 +8,28 @@ namespace Kbg.NppPluginNET
 {
     class UnmanagedExports
     {
+        /// <summary>
+        /// Notepad++ only probes its own folder for .NET assemblies. Load our dependencies
+        /// (Markdig, WebView2, ...) from the plugin folder: plugins\MarkdownViewerPlusPlus\.
+        /// </summary>
+        static UnmanagedExports()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            {
+                try
+                {
+                    string name = new System.Reflection.AssemblyName(args.Name).Name;
+                    string dir = System.IO.Path.GetDirectoryName(typeof(UnmanagedExports).Assembly.Location);
+                    string file = System.IO.Path.Combine(dir, name + ".dll");
+                    return System.IO.File.Exists(file) ? System.Reflection.Assembly.LoadFrom(file) : null;
+                }
+                catch
+                {
+                    return null;
+                }
+            };
+        }
+
         [DllExport(CallingConvention=CallingConvention.Cdecl)]
         static bool isUnicode()
         {
